@@ -117,6 +117,12 @@ bash reader/run_qwen.sh bm25 3
 
 다른 Retriever는 `bm25`를 `tfidf`, `contriever`, `dpr`로 교체한다.
 
+## 결과 보고서
+
+전체 실험 설정과 결과 분석은 아래 보고서에서 확인할 수 있습니다.
+
+[결과 보고서 PDF 보기](docs/scifact_result_report.pdf)
+
 ## 주의
 
 DPR의 기반 encoder 이름에는 원 사전학습 데이터인 `nq`가 포함되지만,
