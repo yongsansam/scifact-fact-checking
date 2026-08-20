@@ -31,8 +31,21 @@ case "$TYPE" in
       --reader-topk "$K" --eval-ks "1,3,5,10,${K}"
     mv "$OUTDIR/${SPLIT}_top${K}.retrieval.jsonl" "$OUT" ;;
   contriever)
-    python "$ROOT/retriever/dense_retrieve.py" --type contriever --corpus "$CORPUS" \
-      --claims "$CLAIMS" --output "$OUT" --topk "$K" --model "$ROOT/models/contriever" ;;
+    INPUT="$ROOT/indexes/contriever_input/$SPLIT"
+    INDEX="$ROOT/indexes/contriever"
+    RUN="$OUTDIR/${SPLIT}_top${K}.trec"
+    python "$ROOT/retriever/contriever/prepare_data.py" --corpus "$CORPUS" \
+      --claims "$CLAIMS" --output-dir "$INPUT"
+    if [[ ! -f "$INDEX/index" ]]; then
+      python -m pyserini.encode --encoder-class contriever \
+        --encoder "$ROOT/models/contriever" --input "$INPUT/corpus.jsonl" \
+        --fields title text --output "$INDEX" --batch 32 --fp16
+    fi
+    python -m pyserini.search.faiss --encoder-class contriever \
+      --encoder "$ROOT/models/contriever" --index "$INDEX" \
+      --topics "$INPUT/queries.tsv" --output "$RUN" --batch 128 --threads 8 --hits "$K"
+    python "$ROOT/retriever/contriever/trec_to_json.py" \
+      --run "$RUN" --output "$OUT" --topk "$K" ;;
   dpr)
     CKPT="$ROOT/checkpoints/dpr/best"
     test -d "$CKPT/question_encoder" || { echo "Train DPR first; see retriever/README.md" >&2; exit 1; }
@@ -41,4 +54,3 @@ case "$TYPE" in
       --question-model "$CKPT/question_encoder" --context-model "$CKPT/ctx_encoder" ;;
 esac
 echo "Wrote $OUT"
-
