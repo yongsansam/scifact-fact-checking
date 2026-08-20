@@ -1,7 +1,6 @@
 # Retriever reproduction
 
-All retrievers write `{"claim_id": ..., "doc_ids": [...]}` JSONL files.
-
+Retrievers `{"claim_id": ..., "doc_ids": [...]}` JSONL files 작성
 ```bash
 bash retriever/run_retriever.sh tfidf train 20
 bash retriever/run_retriever.sh tfidf dev 20
@@ -11,7 +10,7 @@ bash retriever/run_retriever.sh contriever train 20
 bash retriever/run_retriever.sh contriever dev 20
 ```
 
-Train DPR on SciFact before retrieving:
+Train DPR :
 
 ```bash
 python retriever/dpr/train_dpr_scifact.py \
