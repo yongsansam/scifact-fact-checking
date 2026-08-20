@@ -14,6 +14,8 @@ SciFact claim에 대해 4개의 Retriever(TF-IDF, BM25, Contriever, DPR)가 검�
 Reader 구현은 Facebook Research의 Fusion-in-Decoder 구조와 AllenAI의
 SciFact 데이터 형식을 기반으로 프로젝트의 claim-level 3-way 설정에 맞게 구성했다.
 
+또한 Qwen2.5-7B-Instruct 모델을 사용하여 LLM과 FiD기반 Reader와의 평결 예측 성능 차이를 확인해본다.
+
 ## 범위
 
 - Retriever: TF-IDF, BM25, Contriever, SciFact-finetuned DPR
