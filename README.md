@@ -18,18 +18,16 @@ SciFact 데이터 형식을 기반으로 프로젝트의 claim-level 3-way 설�
 
 ## 범위
 
-- Retriever: TF-IDF, BM25, Contriever, SciFact-finetuned DPR
+- Retriever: TF-IDF, BM25, Contriever, DPR
 - Reader: FiD-T5, FiD-BART, Qwen2.5-7B-Instruct
 - Reader 학습: Retriever별 Top-3 abstracts
 - 평가: claim-level Accuracy와 Macro-F1
 
-Natural Questions 재현 코드, binary evidence-only 실험, VeriSci ablation,
-체크포인트와 생성 결과는 포함하지 않는다.
 
 ## Retriever 성능
 
 SciFact development set에서 gold evidence abstract의 검색 여부를 기준으로 계산한
-Retriever별 Recall@K 결과는 다음과 같다. 모든 값의 단위는 `%`이다.
+Retriever별 Recall@K 결과는 다음과 같다.
 
 | Retriever | Recall@1 | Recall@3 | Recall@5 |
 |:--|--:|--:|--:|
@@ -52,7 +50,7 @@ conda activate scifact-qwen
 pip install -r requirements-qwen.txt
 ```
 
-데이터와 모델은 Git으로 추적하지 않는다.
+데이터와 모델은 아래 명령으로 다운 가능하다.
 
 ```bash
 bash download.sh all
@@ -67,10 +65,10 @@ reader/data/        # retrieval 결과를 FiD/Qwen JSON으로 변환
 reader/fid_t5/      # FiD-T5
 reader/src/         # FiD-BART 공통 구현
 reader/qwen/        # Qwen zero-shot reader
-data/               # download.sh 생성, Git 제외
-models/             # download.sh 생성, Git 제외
-checkpoints/        # 학습 시 생성, Git 제외
-outputs/            # 검색 및 평가 결과, Git 제외
+data/               # download.sh 생성
+models/             # download.sh 생성
+checkpoints/        # 학습 시 생성
+outputs/            # 검색 및 평가 결과
 ```
 
 ## Reader 데이터 생성
