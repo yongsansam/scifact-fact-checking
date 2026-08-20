@@ -1,6 +1,14 @@
-# SciFact Multi-Document Fact Checking
+# SciFact Fact Checking
 
-SciFact claim에 대해 네 Retriever가 검색한 abstract를 Reader가 통합해
+"Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering" 
+에서 제안된 Fusion-in-Decoder(FiD) 구조를 재현하고 재현한 구조를 기반으로 Scifact 팩트 체킹 과업을 적용한다.
+
+과학 주장 팩트체킹은 주어진 주장과 관련된 근거 문서를 검색한 후 검색된 근거를 , Reader
+에 입력하여 주장에 대한 최종 평결을 예측하는 과업으로 질의응답 과업에 사용한 Retriever-Reader파이프라인을 적용할 수 있다 특히
+과학 주장 팩트체킹은 주장에 대한 근거가 문서의 여러 위치에 분산되어 존재하는 경우가 많아 다중 근거 문서를 
+통합하는 FiD가 효과적으로 활용 될 수있다
+
+SciFact claim에 대해 4개의 Retriever(TF-IDF, BM25, Contriever, DPR)가 검색한 abstract를 Reader가 통합해
 `SUPPORTS`, `REFUTES`, `NOINFO` 중 하나를 예측하는 재현 코드다.
 
 Reader 구현은 Facebook Research의 Fusion-in-Decoder 구조와 AllenAI의
@@ -15,6 +23,18 @@ SciFact 데이터 형식을 기반으로 프로젝트의 claim-level 3-way 설�
 
 Natural Questions 재현 코드, binary evidence-only 실험, VeriSci ablation,
 체크포인트와 생성 결과는 포함하지 않는다.
+
+## Retriever 성능
+
+SciFact development set에서 gold evidence abstract의 검색 여부를 기준으로 계산한
+Retriever별 Recall@K 결과는 다음과 같다. 모든 값의 단위는 `%`이다.
+
+| Retriever | Recall@1 | Recall@3 | Recall@5 |
+|:--|--:|--:|--:|
+| TF-IDF | 59.6 | 75.5 | 82.5 |
+| BM25 | **72.3** | **87.2** | **89.4** |
+| DPR | 64.4 | 77.7 | 81.4 |
+| Contriever | 64.4 | 81.9 | 86.7 |
 
 ## 설치 및 다운로드
 
