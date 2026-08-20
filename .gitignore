@@ -1,0 +1,12 @@
+/data/
+/models/
+/checkpoints/
+/outputs/
+/indexes/
+*.log
+*.trec
+__pycache__/
+*.py[cod]
+.idea/
+.vscode/
+.DS_Store
